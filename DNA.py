@@ -56,6 +56,7 @@ class BaseClass:
             self.data = string
         else:
             self.data[position] = val
+        self.__init__(self.data)
 
     def __str__(self):
         """
@@ -266,22 +267,21 @@ class DNASequence(BaseClass):
 
 kod = "ACTGA"
 dna = DNASequence(kod)
-print(f'Obiekt DNA dla nici ACTGA: {dna}')
-print(dna.find_motif("GA"))
-print(dna.transcribe())
-print(dna.complement())
-kod1 = "Augaagaagagag"
-rna = RNASequence(kod1)
-print(rna)
+print(f'Obiekt DNA dla nici ACTGA: \n{dna}')
+print(f'Indeks na ktorym znajduje sie motyw GA: {dna.find_motif("GA")}')
+dna.mutate(1, 'A')
+print(f'Obiekt DNA zmutowany zasadą A na 1 indeksie \n{dna}')
+print(f'Obiekt DNA z nicia komplementarna: \n{dna.complement()}')
+rna = dna.transcribe()
+print(f'Obiekt RNA powstaly jako transkrybcja DNA dla nici ACTGA:\n {rna}')
+print(f'Indeks na ktorym znajduje sie motyw UU: {rna.find_motif("UU")}')
+rna.mutate(1, 'U')
+print(f'Obiekt RNA zmutowany zasadą U na 1 indeksie \n{rna}')
 prot = rna.translate()
-print(prot)
-prot.mutate(2, "Trp")
-print(prot)
-dna.mutate(2, 'A')
-print(dna)
-print(DNASequence("ATAgaTagga").transcribe())
-tab = "AUAgaUagga"
-tab1 = "aagaggauuuaaa"
-rna = RNASequence(tab)
-rna1 = RNASequence(tab1)
-print(rna.translate())
+print(f'Obiekt ProteinSequence powstaly jako translacja RNA: \n{prot}')
+prot1 = ProteinSequence(['Leu', 'Phe', 'Ala', 'Ala', 'Lys'])
+print(f'Obiekt ProteinSequence: \n{prot1}')
+prot1.mutate(2, 'Glu')
+print(f'Obiekt ProteinSequence zmutowany aminokwasem Glu na 2 indeksie \n{prot1}')
+print(f'Indeks na ktorym znajduje sie motyw  Phe Glu Ala: {prot1.find_motif(['Phe', 'Glu', 'Ala'])}')
+
