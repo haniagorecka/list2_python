@@ -20,15 +20,15 @@ class Wielomian:
         :return: Stopien wielomianu (liczba)
         """
         i = len(self.wsp) - 1
-        if self.wsp != 0.0:
+        if self.wsp[i] != 0:
             return i
         while i > 0:
             i -= 1
-            if self.wsp[i] != 0.0:
+            if self.wsp[i] != 0:
                 return i
         return 0
 
-    def toString(self):
+    def __str__(self):
         """
         Funkcja zwraca String, z wielomianem w formacie ax^n+bx^(n-1)+...+cx+d
         :return: String z rozpisanym wielomianem
@@ -89,10 +89,9 @@ class Wielomian:
         i = 0
 
         for it in self.wsp:
-            sum += it*x**i
+            sum += it * x ** i
             i += 1
         return sum
-
 
     def __add__(self, wiel2):
         """
@@ -114,7 +113,7 @@ class Wielomian:
             while True:
                 wspList.insert(i, self.wsp[i])
                 i += 1
-                if i <= len(self.wsp.size) - 1:
+                if i <= len(self.wsp) - 1:
                     continue
                 else:
                     break
@@ -149,7 +148,7 @@ class Wielomian:
             i = n
             while True:
                 wspList.insert(i, self.wsp[i])
-                i+=1
+                i += 1
                 if i < len(self.wsp):
                     continue
                 else:
@@ -167,25 +166,30 @@ class Wielomian:
         wiel3 = Wielomian(wspList)
         return wiel3
 
-    def __mul__(self, wiel2):
+    def __mul__(self, second):
         """
         Przeciążenie operatora * dla wielomianów
-        :param wiel2: drugi wielomian, przez który ma być pomnożony ten wielomian
+        :param second: drugi wielomian, przez który ma być pomnożony ten wielomian
         :return: obiekt klasy Wielomian, będący iloczynem dwóch wielomianów
         """
         wspList = []
+
         n = len(self.wsp)
-        m = len(wiel2.wsp)
+        m = len(second.wsp)
         p = 0
         w = 0.0
-        for i in range(0,n):
-            for j in range(0,m):
-                p=i+j
-                w=self.wsp[i] * wiel2.wsp[j]
+        for i in range(0, n):
+            for j in range(0, m):
+                p = i + j
+                w = self.wsp[i] * second.wsp[j]
                 if len(wspList) > p:
                     wspList[p] += w
                 else:
                     wspList.insert(p, w)
+        i = len(wspList) - 1
+        while i >= 0 and wspList[i] == 0:
+            wspList.pop(i)
+            i -= 1
         wiel3 = Wielomian(wspList)
         return wiel3
 
@@ -204,26 +208,38 @@ class Wielomian:
         :return: obiekt klasy Wielomian, będący różnicą dwóch wielomianów
         """
         return self - wiel2
-    def __imul__(self, wiel2):
+
+    def __imul__(self, second):
         """
         Przeciążenie operatora *= dla wielomianów
-        :param wiel2: drugi wielomian, przez który ma być pomnożony ten wielomian
+        :param second: drugi wielomian, przez który ma być pomnożony ten wielomian
         :return: obiekt klasy Wielomian, będący iloczynem dwóch wielomianów
         """
-        return self*wiel2
+        return self * second
 
 
-
-tab = [1,1,1,1]
-tab2 = [2,2,2,2]
+tab = [1, 1, 1, 1]
+tab2 = [2, 2, 2, 2]
+tablica = [0, 0]
 wiel = Wielomian(tab)
 wiel2 = Wielomian(tab2)
+wiel3 = Wielomian(tablica)
 v = wiel.wartosc(2)
 v2 = wiel2.wartosc(2)
+print(f'Wiel: {wiel}')
+print(f'Wiel2: {wiel2}')
+print(f'Wiel3: {wiel3}')
+print(f"Wartosc Wiel(2): {v}")
+print(f"Wartosc Wielq2(2): {v2}")
+wiel9 = wiel + wiel2
+print(f'Suma wiel+wiel2:  {wiel9}')
+wiel4 = wiel - wiel2
+print(f'Roznica wiel-wiel2:  {wiel4}')
+wiel4 = wiel2 - wiel
+print(f'Roznica wiel2-wiel:  {wiel4}')
+wiel5 = wiel3 * wiel
+print(f'Wspolczynniki iloczynu wiel*wiel3: {wiel5.wsp}')
+wiel5 = wiel2 * wiel
+print(f'Iloczyn wiel*wiel2: {wiel5}')
 
-print("\n" + str(v))
-print("\n" + str(v2))
-wiel3 = wiel*wiel2
-print("\n" + wiel3.toString())
-wiel*=wiel2
-print("\n" + wiel.toString())
+
